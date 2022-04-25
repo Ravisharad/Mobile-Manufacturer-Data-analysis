@@ -71,7 +71,7 @@ INSERT INTO DIM_MODEL VALUES
 ('5230', 31, '14'), 
 ('6600', 47, '14'), 
 ('3310 (3330)', 28, '14'), 
-('6010 (6020/6030)', 55, '14'), 
+('6010Â (6020/6030)', 55, '14'), 
 ('6230 (6233)', 52, '14'), 
 ('E1100', 148, '12'), 
 ('E250', 168, '12'), 
@@ -516,7 +516,7 @@ Select * from FACT_TRANSACTIONS
 
 
 
---q1--
+--q1 List states in whcih customers have bought cellphones since 2005 til today --
 select distinct
 tbl1.State 
  from DIM_LOCATION as tbl1
@@ -529,7 +529,7 @@ where year(date)>=2005
 
 
 
---q2--
+--q2 Which US state is buying more 'Saumsung' phones?--
 Select 
  State as state_name,
 Manufacturer_Name as company_name,
@@ -546,7 +546,7 @@ DIM_MODEL as tbl3 on tbl1.IDModel = tbl3.IDModel
  having
   Manufacturer_Name in ('Samsung')
 
-  --q3--
+  --q3 Show number of transacions for each model per zip code per state?  --
   Select 
   Distinct Model_Name,
   COUNT(Quantity) as count_of_transactions,
@@ -561,7 +561,7 @@ DIM_MODEL as tbl3 on tbl1.IDModel = tbl3.IDModel
   Model_Name,State,ZipCode
 
 
-  --Q4--
+  --Q4 Select cheapest cellphone--
   Select 
   top 1 Model_Name,
   IDModel,
@@ -569,7 +569,7 @@ DIM_MODEL as tbl3 on tbl1.IDModel = tbl3.IDModel
   from DIM_MODEL as tbl1
   order by Unit_price
 
-  --q5--
+  --q5 Find average prize in each model in top 5 manufacturers in terms of sales quantity and order average price--
   Select top 5
   Manufacturer_Name ,Model_Name,
   AVG(TotalPrice) as average_price,
@@ -583,7 +583,7 @@ DIM_MODEL as tbl3 on tbl1.IDModel = tbl3.IDModel
    Manufacturer_Name,Model_Name
    order by AVG(TotalPrice) desc
 
-   --q6--
+   --q6 List name sof  customers who have spent avergae amunt above  500 in 2009--
    Select
    Customer_Name ,
    AVG(TotalPrice) as average_price
@@ -594,7 +594,7 @@ DIM_MODEL as tbl3 on tbl1.IDModel = tbl3.IDModel
    group by   Customer_Name
    having  AVG(TotalPrice) >500
 
-   --q7--
+   --q7 List any model which was in top 5 in terms of quantity  in years 2008,2009 and 2010--
  Select IDModel,Model_Name,
  Manufacturer_Name
 from DIM_MANUFACTURER as tbl1
@@ -633,7 +633,7 @@ order by sum(Quantity) desc) as tbl5)
 
 
 
-   --q8--
+   --q8 Show manufacturer with second best sale in year 2009 and mamnufacturer with second best sale in 2010--
   Select * from (
   select
   ROW_NUMBER() over ( partition by DATEPART(year,Date) order by sum(quantity) desc) as rnum,
@@ -648,7 +648,7 @@ group by tbl2.IDModel, DATEPART(year,Date), tbl3.IDManufacturer, Manufacturer_Na
 where rnum = 2
 
 
-   --q9--
+   --q9 Show manufactureres who sold phone in 2010 but not in 2009--
   Select * from
   (
   select tbl2.IDManufacturer ,
@@ -681,7 +681,7 @@ where rnum = 2
 
 
 
-	  --q10---
+	  --q10 Find top 100 customers , average spend , average quantity by each year & % of chane in their spend---
 	
 SELECT TOP 100 *, 
 CONCAT(CAST
